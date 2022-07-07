@@ -2,12 +2,13 @@
   "name": "electron-app",
   "version": "1.0.0",
   "description": "Test electron task",
-  "main": "public/index.ts",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "electron-dev": "electron ."
+    "build:react": "webpack --config webpack.prod.js",
+    "build:app": "yarn build:react && electron ."
   },
   "repository": {
     "type": "git",

@@ -1,22 +1,19 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow } = require('electron');
 
 const path = require('path');
 
 const createWindow = () => {
   const window = new BrowserWindow({
-    width: 900,
-    height: 680,
+    width: 800,
+    height: 600,
     title: 'Electron',
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
     },
   });
-  window.loadURL('http://localhost:8080');
-  window.loadFile('index.ts');
-  window.webContents.openDevTools();
+
+  window.loadFile(path.resolve(__dirname, 'dist/index.html'));
 };
 
 app.on('ready', createWindow);

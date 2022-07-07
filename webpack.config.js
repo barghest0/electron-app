@@ -92,6 +92,7 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: `${PATHS.public}/index.html`,
+      filename: `index.html`,
     }),
     new MiniCssExtractPlugin({
       filename: `css/[name].css`,
