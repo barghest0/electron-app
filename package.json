@@ -1,0 +1,59 @@
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "description": "Test electron task",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barghest0/electron-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barghest0/electron-app/issues"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.17",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.25",
+    "babel-jest": "^28.1.1",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-styled-components": "^2.0.7",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "node-sass": "^7.0.1",
+    "resolve-url-loader": "^5.0.0",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
+    "axios": "^0.27.2",
+    "react": "^18.0.0-rc.3",
+    "react-dom": "^18.0.0-rc.3",
+    "react-redux": "^7.2.8",
+    "react-router-dom": "^6.2.2",
+    "styled-components": "^5.3.5",
+    "typescript": "^4.6.2",
+    "yup": "^0.32.11"
+  },
+  "homepage": "https://github.com/barghest0/electron-app#readme"
+}
