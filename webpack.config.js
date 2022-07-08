@@ -29,6 +29,8 @@ const config = {
   resolve: {
     alias: {
       components: path.resolve(__dirname, './src/components'),
+      shared: path.resolve(__dirname, './src/shared'),
+      pages: path.resolve(__dirname, './src/pages'),
     },
     extensions: ['.ts', '.tsx', '.js'],
   },
