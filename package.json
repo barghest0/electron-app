@@ -58,6 +58,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@types/node": "^18.0.3",
     "axios": "^0.27.2",
+    "electron-dl": "^3.3.1",
     "electron-reload": "^2.0.0-alpha.1",
     "formik": "^2.2.9",
     "react": "^18.0.0-rc.3",

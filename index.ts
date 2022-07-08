@@ -19,14 +19,6 @@ const createWindow = () => {
   // window.loadFile(path.resolve(__dirname, 'public/index.html'));
 
   window.loadURL('http://localhost:8080');
-  ipcMain.on('download', async (event, { url }) => {
-    dialog.showOpenDialog({
-      defaultPath: '',
-    });
-
-    const window = BrowserWindow.getFocusedWindow();
-    const file = await download(window, url);
-  });
 };
 
 app.on('ready', createWindow);
@@ -41,4 +33,14 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on('download', async (event, { url }) => {
+  dialog.showOpenDialog({
+    defaultPath: '',
+  });
+  console.log(url);
+
+  const window = BrowserWindow.getFocusedWindow();
+  const file = await download(window, url);
 });

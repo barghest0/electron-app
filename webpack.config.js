@@ -22,7 +22,7 @@ const config = {
     clean: true,
   },
 
-  target: 'electron-main',
+  target: 'electron-renderer',
 
   externals: {
     path: PATHS,

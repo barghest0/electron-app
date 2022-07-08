@@ -1,11 +1,11 @@
 import { FC, SyntheticEvent } from 'react';
-import {TextField as MUITextField} from '@mui/material'
+import { TextField as MUITextField } from '@mui/material';
 
 import * as S from './TextField.style';
 
 type Props = {
   name: string;
-  onChange: (event: SyntheticEvent) => void
+  onChange: (event: SyntheticEvent) => void;
   value: string | number;
   onBlur?: (event: SyntheticEvent) => void;
   label?: string;
@@ -26,11 +26,19 @@ const TextField: FC<Props> = ({
   placeholder,
   type,
   label,
-  variant
+  variant,
 }) => {
   return (
     <S.TextField>
-      <MUITextField name={name} onChange={onChange} variant={variant} value={value} label={label} />
+      <MUITextField
+        name={name}
+        onChange={onChange}
+        variant={variant}
+        value={value}
+        label={label}
+        error={touched && Boolean(error)}
+        helperText={touched && error}
+      />
     </S.TextField>
   );
 };
