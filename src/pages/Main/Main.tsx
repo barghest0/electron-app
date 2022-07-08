@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import { ipcRenderer } from 'electron';
 
 import TextField from 'components/TextField/TextField';
 import Button from 'components/Button/Button';
@@ -15,7 +16,9 @@ const Main = () => {
   };
 
   const onUrlFormSubmit = ({ url }: UrlValues) => {
-    console.log(url);
+    ipcRenderer.send('download', {
+      url,
+    });
   };
 
   const { handleChange, values, handleSubmit } = useFormik({

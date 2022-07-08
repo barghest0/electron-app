@@ -22,6 +22,8 @@ const config = {
     clean: true,
   },
 
+  target: 'electron-main',
+
   externals: {
     path: PATHS,
   },
