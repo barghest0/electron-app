@@ -3,8 +3,6 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const { download } = require('electron-dl');
 
-require('electron-reload')(__dirname);
-
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -17,8 +15,8 @@ const createWindow = () => {
   });
 
   // window.loadFile(path.resolve(__dirname, 'public/index.html'));
-
   window.loadURL('http://localhost:8080');
+  window.setMenu(null);
 };
 
 app.on('ready', createWindow);
@@ -36,11 +34,20 @@ app.on('activate', () => {
 });
 
 ipcMain.on('download', async (event, { url }) => {
-  dialog.showOpenDialog({
-    defaultPath: '',
+  const path = app.getPath('downloads');
+  
+  const name = url.split('/').pop();
+  const userPath = dialog.showSaveDialogSync({
+    defaultPath: `${path}/${name}`,
   });
-  console.log(url);
 
-  const window = BrowserWindow.getFocusedWindow();
-  const file = await download(window, url);
+  if (userPath) {
+    const filePath = userPath.split('\\');
+    const filename = `${filePath.pop()}`;
+    const directory = filePath.join('/');
+    const properties = { directory, filename };
+
+    const window = BrowserWindow.getFocusedWindow();
+    await download(window, url, { ...properties });
+  }
 });
