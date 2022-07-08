@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack serve --config webpack.dev.js",
+    "dev:react": "webpack serve --config webpack.dev.js",
+    "dev:electron": "electron .",
+    "dev:app": "concurrently \"yarn dev:react\" \"electron .\"",
     "build:react": "webpack --config webpack.prod.js",
-    "build:electron": "electron .",
-    "build:app": "yarn build:react && build:electron"
+    "build:app": "yarn build:react && dev:electron"
   },
   "repository": {
     "type": "git",
@@ -57,6 +58,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@types/node": "^18.0.3",
     "axios": "^0.27.2",
+    "electron-dl": "^3.3.1",
     "formik": "^2.2.9",
     "react": "^18.0.0-rc.3",
     "react-dom": "^18.0.0-rc.3",

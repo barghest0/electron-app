@@ -1,9 +1,11 @@
 import { useFormik } from 'formik';
+import { ipcRenderer } from 'electron';
 
 import TextField from 'components/TextField/TextField';
 import Button from 'components/Button/Button';
 
 import * as S from './Main.style';
+import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 type UrlValues = {
   url: string;
@@ -15,12 +17,15 @@ const Main = () => {
   };
 
   const onUrlFormSubmit = ({ url }: UrlValues) => {
-    console.log(url);
+    ipcRenderer.send('download', {
+      url,
+    });
   };
 
-  const { handleChange, values, handleSubmit } = useFormik({
+  const { handleChange, values, handleSubmit, errors, touched } = useFormik({
     initialValues: initialUrlValues,
     onSubmit: onUrlFormSubmit,
+    validationSchema: urlValidationSchema,
   });
 
   return (
@@ -35,6 +40,8 @@ const Main = () => {
                 onChange={handleChange}
                 variant="filled"
                 label="URL"
+                error={errors.url}
+                touched={touched.url}
                 value={values.url}
               />
             </S.FormField>
