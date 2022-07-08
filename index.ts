@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 
 const path = require('path');
-const __dirname = path.resolve()
 
 const createWindow = () => {
   const window = new BrowserWindow({

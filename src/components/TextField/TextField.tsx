@@ -25,10 +25,12 @@ const TextField: FC<Props> = ({
   touched,
   placeholder,
   type,
+  label,
+  variant
 }) => {
   return (
     <S.TextField>
-      <MUITextField name={name} onChange={onChange} value={value} />
+      <MUITextField name={name} onChange={onChange} variant={variant} value={value} label={label} />
     </S.TextField>
   );
 };

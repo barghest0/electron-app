@@ -1,9 +1,9 @@
 const theme = {
   white: '#fff',
-  main: '#030303',
-  second: '#fff',
+  main: '#121029',
+  second: '#139a77',
   black: '#000',
-  border: '#fff',
+  border: '#139a77',
   dark: '#030303',
 };
 

@@ -44,6 +44,16 @@ const MUItheme = createTheme({
       ],
     },
 
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          '&:before': {
+            borderBottom: `1px solid ${theme.border}`,
+          },
+        },
+      },
+    },
+
     MuiInput: {
       styleOverrides: {
         root: {
@@ -78,7 +88,7 @@ const MUItheme = createTheme({
         },
         notchedOutline: {
           transition: 'all 0.2s linear',
-          borderColor: theme.border,
+          borderColor: theme.white,
         },
       },
     },

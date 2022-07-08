@@ -22,13 +22,27 @@ const Main = () => {
     initialValues: initialUrlValues,
     onSubmit: onUrlFormSubmit,
   });
+
   return (
     <S.Main>
       <S.Container>
-        <S.Form onSubmit={handleSubmit}>
-          <TextField name="url" onChange={handleChange} value={values.url} />
-          <Button>Download</Button>
-        </S.Form>
+        <S.Content>
+          <S.Title>Download everything!</S.Title>
+          <S.Form onSubmit={handleSubmit}>
+            <S.FormField>
+              <TextField
+                name="url"
+                onChange={handleChange}
+                variant="filled"
+                label="URL"
+                value={values.url}
+              />
+            </S.FormField>
+            <S.FormSubmit>
+              <Button type="submit">Download</Button>
+            </S.FormSubmit>
+          </S.Form>
+        </S.Content>
       </S.Container>
     </S.Main>
   );
