@@ -29,7 +29,7 @@ const Form = styled.form`
 `;
 
 const FormField = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   width: 100%;
 `;
 
@@ -37,6 +37,34 @@ const FormSubmit = styled.div`
   width: 20%;
   min-width: 80px;
   height: 40px;
+  margin-bottom: 50px;
 `;
 
-export { Main, Container, Form, FormField, FormSubmit, Content, Title };
+const Downloads = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+`;
+
+const DownloadedFile = styled.div`
+  height: 50px;
+`;
+
+const DownloadsTitle = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+`;
+
+export {
+  Main,
+  Container,
+  Form,
+  FormField,
+  FormSubmit,
+  Content,
+  Title,
+  Downloads,
+  DownloadedFile,
+  DownloadsTitle,
+};

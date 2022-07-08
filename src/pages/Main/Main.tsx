@@ -3,9 +3,10 @@ import { ipcRenderer } from 'electron';
 
 import TextField from 'components/TextField/TextField';
 import Button from 'components/Button/Button';
+import DownloadedFile from 'components/DownloadedFile/DownloadedFile';
+import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 import * as S from './Main.style';
-import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 type UrlValues = {
   url: string;
@@ -49,6 +50,15 @@ const Main = () => {
               <Button type="submit">Download</Button>
             </S.FormSubmit>
           </S.Form>
+          <S.Downloads>
+            <S.DownloadsTitle>Last downloads</S.DownloadsTitle>
+            <S.DownloadedFile>
+              <DownloadedFile path="mock" />
+            </S.DownloadedFile>
+            <S.DownloadedFile>
+              <DownloadedFile path="mock" />
+            </S.DownloadedFile>
+          </S.Downloads>
         </S.Content>
       </S.Container>
     </S.Main>
