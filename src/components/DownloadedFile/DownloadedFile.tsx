@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import { FC } from 'react';
 import * as S from './DownloadedFile.style';
 
@@ -6,9 +7,8 @@ type Props = {
 };
 
 const DownloadedFile: FC<Props> = ({ path }) => {
-  const onDownloadedFileClick = () => {
-    console.log(path);
-  };
+  const onDownloadedFileClick = () => {};
+
   return (
     <S.DownloadedFile onClick={onDownloadedFileClick}>{path}</S.DownloadedFile>
   );

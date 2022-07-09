@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 import { container } from 'shared/styles/mixins';
 
-const Main = styled.div``;
+const Main = styled.div`
+  padding: 20px 0;
+`;
 
 const Container = styled.div`
   ${container}
@@ -47,7 +49,13 @@ const Downloads = styled.div`
 `;
 
 const DownloadedFile = styled.div`
+  min-height: 50px;
   height: 50px;
+`;
+
+const DownloadedFiles = styled.div`
+  height: 300px;
+  overflow: auto;
 `;
 
 const DownloadsTitle = styled.div`
@@ -67,4 +75,5 @@ export {
   Downloads,
   DownloadedFile,
   DownloadsTitle,
+  DownloadedFiles,
 };

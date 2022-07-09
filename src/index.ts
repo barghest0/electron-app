@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-
 const path = require('path');
 const { download } = require('electron-dl');
+const fs = require('fs');
 
 const createWindow = () => {
   const window = new BrowserWindow({
@@ -14,7 +14,7 @@ const createWindow = () => {
     },
   });
 
-  // window.loadFile(path.resolve(__dirname, 'public/index.html'));
+  // window.loadFile(path.resolve(__dirname, 'dist/index.html'));
   window.loadURL('http://localhost:8080');
   // window.setMenu(null);
 };
@@ -50,4 +50,20 @@ ipcMain.on('download', async (event, { url }) => {
     const window = BrowserWindow.getFocusedWindow();
     await download(window, url, { ...properties });
   }
+});
+
+ipcMain.on('request-downloads', () => {
+  const path = app.getPath('downloads');
+  const files = fs.readdirSync(path).slice(0, 10);
+  files.sort((a, b) => {
+    return (
+      fs.statSync(`${path}/${b}`).mtime.getTime() -
+      fs.statSync(`${path}/${a}`).mtime.getTime()
+    );
+  });
+
+  BrowserWindow.getFocusedWindow()?.webContents.send(
+    'downloads-recieved',
+    files,
+  );
 });

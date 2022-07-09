@@ -7,12 +7,15 @@ import DownloadedFile from 'components/DownloadedFile/DownloadedFile';
 import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 import * as S from './Main.style';
+import { useEffect, useState } from 'react';
 
 type UrlValues = {
   url: string;
 };
 
 const Main = () => {
+  const [downloads, setDownloads] = useState([]);
+
   const initialUrlValues = {
     url: '',
   };
@@ -28,6 +31,19 @@ const Main = () => {
     onSubmit: onUrlFormSubmit,
     validationSchema: urlValidationSchema,
   });
+
+  useEffect(() => {
+    ipcRenderer.send('request-downloads');
+    ipcRenderer.on('downloads-recieved', (event, files) => {
+      setDownloads(files);
+    });
+  }, []);
+
+  const downloadedFiles = downloads.map((item) => (
+    <S.DownloadedFile key={item}>
+      <DownloadedFile path={item} />
+    </S.DownloadedFile>
+  ));
 
   return (
     <S.Main>
@@ -52,12 +68,7 @@ const Main = () => {
           </S.Form>
           <S.Downloads>
             <S.DownloadsTitle>Last downloads</S.DownloadsTitle>
-            <S.DownloadedFile>
-              <DownloadedFile path="mock" />
-            </S.DownloadedFile>
-            <S.DownloadedFile>
-              <DownloadedFile path="mock" />
-            </S.DownloadedFile>
+            <S.DownloadedFiles>{downloadedFiles}</S.DownloadedFiles>
           </S.Downloads>
         </S.Content>
       </S.Container>
