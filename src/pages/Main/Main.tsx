@@ -7,6 +7,7 @@ import Button from 'components/Button/Button';
 import DownloadedFile from 'components/DownloadedFile/DownloadedFile';
 import { Download } from 'components/DownloadedFile/types';
 import { urlValidationSchema } from 'shared/form-validators/url-validations';
+import { ipcActions } from 'shared/constants/electron';
 
 import * as S from './Main.style';
 
@@ -22,7 +23,7 @@ const Main = () => {
   };
 
   const onUrlFormSubmit = ({ url }: UrlValues) => {
-    ipcRenderer.send('download', {
+    ipcRenderer.send(ipcActions.download, {
       url,
     });
   };
@@ -34,11 +35,11 @@ const Main = () => {
   });
 
   useEffect(() => {
-    ipcRenderer.send('request-downloads');
-    ipcRenderer.on('downloads-recieved', (_, { downloads }) => {
+    ipcRenderer.send(ipcActions.requestDownloads);
+    ipcRenderer.on(ipcActions.downloadsRecieved, (_, { downloads }) => {
       setDownloads(downloads);
     });
-    ipcRenderer.on('download-complete', (_, { file }) => {
+    ipcRenderer.on(ipcActions.downloadComplete, (_, { file }) => {
       const newDownloadedFile = {
         path: file.path,
         name: file.fileName,
@@ -46,8 +47,6 @@ const Main = () => {
       setDownloads((prevState) => [newDownloadedFile, ...prevState]);
     });
   }, []);
-
-  console.log(downloads);
 
   const downloadedFiles = downloads.map((download) => (
     <S.DownloadedFile key={download.name}>

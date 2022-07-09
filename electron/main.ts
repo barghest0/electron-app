@@ -3,6 +3,11 @@ import path from 'path';
 import { download } from 'electron-dl';
 import fs from 'fs';
 
+import { getFileTimestamp } from 'shared/utils/fs-utils';
+import { ipcActions } from 'shared/constants/electron';
+
+import { MAX_DOWNLOADS } from './constants';
+
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -14,9 +19,9 @@ const createWindow = () => {
     },
   });
 
+  // window.setMenu(null);
   // window.loadFile(path.resolve(__dirname, 'dist/index.html'));
   window.loadURL('http://localhost:8080');
-  // window.setMenu(null);
 };
 
 app.on('ready', createWindow);
@@ -35,7 +40,7 @@ app.on('activate', () => {
 
 const downloadsPath = app.getPath('downloads');
 
-ipcMain.on('download', async (_, { url }) => {
+ipcMain.on(ipcActions.download, async (_, { url }) => {
   const name = url.split('/').pop();
   const userPath = dialog.showSaveDialogSync({
     defaultPath: `${downloadsPath}/${name}`,
@@ -47,12 +52,12 @@ ipcMain.on('download', async (_, { url }) => {
     const directory = filePath.join('/');
     const properties = { directory, filename };
 
-    const window = BrowserWindow.getFocusedWindow();
+    const window = BrowserWindow.getFocusedWindow() as BrowserWindow;
     await download(window, url, {
       ...properties,
       onCompleted: (file) => {
         BrowserWindow.getFocusedWindow()?.webContents.send(
-          'download-complete',
+          ipcActions.downloadComplete,
           { file },
         );
       },
@@ -60,12 +65,12 @@ ipcMain.on('download', async (_, { url }) => {
   }
 });
 
-ipcMain.on('request-downloads', () => {
-  const files = fs.readdirSync(downloadsPath).slice(0, 10);
-  files.sort((a, b) => {
+ipcMain.on(ipcActions.requestDownloads, () => {
+  const files = fs.readdirSync(downloadsPath).slice(0, MAX_DOWNLOADS);
+  files.sort((current, next) => {
     return (
-      fs.statSync(`${downloadsPath}/${b}`).mtime.getTime() -
-      fs.statSync(`${downloadsPath}/${a}`).mtime.getTime()
+      getFileTimestamp(`${downloadsPath}/${next}`) -
+      getFileTimestamp(`${downloadsPath}/${current}`)
     );
   });
 
@@ -74,11 +79,14 @@ ipcMain.on('request-downloads', () => {
     name,
   }));
 
-  BrowserWindow.getFocusedWindow()?.webContents.send('downloads-recieved', {
-    downloads,
-  });
+  BrowserWindow.getFocusedWindow()?.webContents.send(
+    ipcActions.downloadsRecieved,
+    {
+      downloads,
+    },
+  );
 });
 
-ipcMain.on('open-file', (_, { path }) => {
+ipcMain.on(ipcActions.openFile, (_, { path }) => {
   shell.showItemInFolder(path);
 });
