@@ -48,7 +48,15 @@ ipcMain.on('download', async (_, { url }) => {
     const properties = { directory, filename };
 
     const window = BrowserWindow.getFocusedWindow();
-    await download(window, url, { ...properties });
+    await download(window, url, {
+      ...properties,
+      onCompleted: (file) => {
+        BrowserWindow.getFocusedWindow()?.webContents.send(
+          'download-complete',
+          { file },
+        );
+      },
+    });
   }
 });
 

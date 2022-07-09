@@ -1,20 +1,21 @@
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { ipcRenderer } from 'electron';
 
 import TextField from 'components/TextField/TextField';
 import Button from 'components/Button/Button';
 import DownloadedFile from 'components/DownloadedFile/DownloadedFile';
+import { Download } from 'components/DownloadedFile/types';
 import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 import * as S from './Main.style';
-import { useEffect, useState } from 'react';
 
 type UrlValues = {
   url: string;
 };
 
 const Main = () => {
-  const [downloads, setDownloads] = useState([]);
+  const [downloads, setDownloads] = useState<Download[]>([]);
 
   const initialUrlValues = {
     url: '',
@@ -34,10 +35,19 @@ const Main = () => {
 
   useEffect(() => {
     ipcRenderer.send('request-downloads');
-    ipcRenderer.on('downloads-recieved', (event, { downloads }) => {
+    ipcRenderer.on('downloads-recieved', (_, { downloads }) => {
       setDownloads(downloads);
     });
+    ipcRenderer.on('download-complete', (_, { file }) => {
+      const newDownloadedFile = {
+        path: file.path,
+        name: file.fileName,
+      };
+      setDownloads((prevState) => [newDownloadedFile, ...prevState]);
+    });
   }, []);
+
+  console.log(downloads);
 
   const downloadedFiles = downloads.map((download) => (
     <S.DownloadedFile key={download.name}>

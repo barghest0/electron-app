@@ -1,11 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { FC } from 'react';
-import * as S from './DownloadedFile.style';
 
-type Download = {
-  path: string;
-  name: string;
-};
+import * as S from './DownloadedFile.style';
+import { Download } from './types';
 
 type Props = {
   download: Download;
