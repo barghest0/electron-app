@@ -1,28 +1,23 @@
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-
-const __dirname = path.resolve();
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PATHS = {
-  src: path.join(__dirname, './src'),
-  public: path.join(__dirname, './public'),
-  dist: path.join(__dirname, './dist'),
+  src: path.join(__dirname, '../src'),
+  public: path.join(__dirname, '../public'),
+  dist: path.join(__dirname, '../dist'),
+  electron: path.join(__dirname, '../electron'),
   assets: 'assets',
 };
 
 const config = {
-  entry: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
-
   devtool: 'source-map',
 
   output: {
-    filename: 'index.js',
+    filename: 'js/[name].js',
     path: PATHS.dist,
     clean: true,
   },
-
-  target: 'electron-renderer',
 
   externals: {
     path: PATHS,
@@ -30,9 +25,9 @@ const config = {
 
   resolve: {
     alias: {
-      components: path.resolve(__dirname, './src/components'),
-      shared: path.resolve(__dirname, './src/shared'),
-      pages: path.resolve(__dirname, './src/pages'),
+      components: path.resolve(__dirname, '../src/components'),
+      shared: path.resolve(__dirname, '../src/shared'),
+      pages: path.resolve(__dirname, '../src/pages'),
     },
     extensions: ['.ts', '.tsx', '.js'],
   },
@@ -104,4 +99,4 @@ const config = {
   ],
 };
 
-export default config;
+module.exports = config;

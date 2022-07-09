@@ -2,13 +2,12 @@
   "name": "electron-app",
   "version": "1.0.0",
   "description": "Test electron task",
-  "main": "src/index.ts",
-  "type": "module",
+  "main": "dist/js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:react": "webpack serve --config webpack.dev.js",
-    "dev:electron": "electron .",
-    "dev:app": "concurrently \"yarn dev:react\" \"electron .\"",
+    "dev:react": "webpack serve --config webpack/dev/webpack.react.dev.js",
+    "dev:electron": "webpack --config webpack/dev/webpack.electron.dev.js && electron .",
+    "dev:app": "concurrently \"yarn dev:react\" \"yarn dev:electron\"",
     "build:react": "webpack --config webpack.prod.js",
     "build:app": "yarn build:react && dev:electron"
   },

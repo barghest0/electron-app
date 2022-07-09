@@ -1,7 +1,7 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
-const path = require('path');
-const { download } = require('electron-dl');
-const fs = require('fs');
+import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
+import path from 'path';
+import { download } from 'electron-dl';
+import fs from 'fs';
 
 const createWindow = () => {
   const window = new BrowserWindow({
