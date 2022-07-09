@@ -3,14 +3,16 @@ import { FC } from 'react';
 import * as S from './DownloadedFile.style';
 
 type Props = {
-  path: string;
+  name: string;
 };
 
-const DownloadedFile: FC<Props> = ({ path }) => {
-  const onDownloadedFileClick = () => {};
+const DownloadedFile: FC<Props> = ({ name }) => {
+  const onDownloadedFileClick = () => {
+    ipcRenderer.send('open-file', { name });
+  };
 
   return (
-    <S.DownloadedFile onClick={onDownloadedFileClick}>{path}</S.DownloadedFile>
+    <S.DownloadedFile onClick={onDownloadedFileClick}>{name}</S.DownloadedFile>
   );
 };
 

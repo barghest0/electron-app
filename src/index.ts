@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const { download } = require('electron-dl');
 const fs = require('fs');
@@ -33,12 +33,12 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('download', async (event, { url }) => {
-  const path = app.getPath('downloads');
+const downloadsPath = app.getPath('downloads');
 
+ipcMain.on('download', async (_, { url }) => {
   const name = url.split('/').pop();
   const userPath = dialog.showSaveDialogSync({
-    defaultPath: `${path}/${name}`,
+    defaultPath: `${downloadsPath}/${name}`,
   });
 
   if (userPath) {
@@ -53,17 +53,21 @@ ipcMain.on('download', async (event, { url }) => {
 });
 
 ipcMain.on('request-downloads', () => {
-  const path = app.getPath('downloads');
-  const files = fs.readdirSync(path).slice(0, 10);
+  const files = fs.readdirSync(downloadsPath).slice(0, 10);
   files.sort((a, b) => {
     return (
-      fs.statSync(`${path}/${b}`).mtime.getTime() -
-      fs.statSync(`${path}/${a}`).mtime.getTime()
+      fs.statSync(`${downloadsPath}/${b}`).mtime.getTime() -
+      fs.statSync(`${downloadsPath}/${a}`).mtime.getTime()
     );
   });
 
-  BrowserWindow.getFocusedWindow()?.webContents.send(
-    'downloads-recieved',
+  BrowserWindow.getFocusedWindow()?.webContents.send('downloads-recieved', {
     files,
-  );
+  });
+});
+
+ipcMain.on('open-file', (_, { name }) => {
+  const pathToFile = `${downloadsPath}\\${name}`;
+
+  shell.showItemInFolder(pathToFile);
 });
