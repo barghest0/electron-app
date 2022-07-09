@@ -34,14 +34,14 @@ const Main = () => {
 
   useEffect(() => {
     ipcRenderer.send('request-downloads');
-    ipcRenderer.on('downloads-recieved', (event, { files }) => {
-      setDownloads(files);
+    ipcRenderer.on('downloads-recieved', (event, { downloads }) => {
+      setDownloads(downloads);
     });
   }, []);
 
-  const downloadedFiles = downloads.map((item) => (
-    <S.DownloadedFile key={item}>
-      <DownloadedFile name={item} />
+  const downloadedFiles = downloads.map((download) => (
+    <S.DownloadedFile key={download.name}>
+      <DownloadedFile download={download} />
     </S.DownloadedFile>
   ));
 

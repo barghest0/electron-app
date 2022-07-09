@@ -61,13 +61,16 @@ ipcMain.on('request-downloads', () => {
     );
   });
 
+  const downloads = files.map((name) => ({
+    path: `${downloadsPath}\\${name}`,
+    name,
+  }));
+
   BrowserWindow.getFocusedWindow()?.webContents.send('downloads-recieved', {
-    files,
+    downloads,
   });
 });
 
-ipcMain.on('open-file', (_, { name }) => {
-  const pathToFile = `${downloadsPath}\\${name}`;
-
-  shell.showItemInFolder(pathToFile);
+ipcMain.on('open-file', (_, { path }) => {
+  shell.showItemInFolder(path);
 });
