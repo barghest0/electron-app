@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 import { container } from 'shared/styles/mixins';
 
-const Main = styled.div``;
+const Main = styled.div`
+  padding: 20px 0;
+`;
 
 const Container = styled.div`
   ${container}
@@ -29,7 +31,7 @@ const Form = styled.form`
 `;
 
 const FormField = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   width: 100%;
 `;
 
@@ -37,6 +39,41 @@ const FormSubmit = styled.div`
   width: 20%;
   min-width: 80px;
   height: 40px;
+  margin-bottom: 50px;
 `;
 
-export { Main, Container, Form, FormField, FormSubmit, Content, Title };
+const Downloads = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+`;
+
+const DownloadedFile = styled.div`
+  min-height: 50px;
+  height: 50px;
+`;
+
+const DownloadedFiles = styled.div`
+  height: 300px;
+  overflow: auto;
+`;
+
+const DownloadsTitle = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+`;
+
+export {
+  Main,
+  Container,
+  Form,
+  FormField,
+  FormSubmit,
+  Content,
+  Title,
+  Downloads,
+  DownloadedFile,
+  DownloadsTitle,
+  DownloadedFiles,
+};

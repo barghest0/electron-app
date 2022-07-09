@@ -1,17 +1,22 @@
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { ipcRenderer } from 'electron';
 
 import TextField from 'components/TextField/TextField';
 import Button from 'components/Button/Button';
+import DownloadedFile from 'components/DownloadedFile/DownloadedFile';
+import { Download } from 'components/DownloadedFile/types';
+import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 import * as S from './Main.style';
-import { urlValidationSchema } from 'shared/form-validators/url-validations';
 
 type UrlValues = {
   url: string;
 };
 
 const Main = () => {
+  const [downloads, setDownloads] = useState<Download[]>([]);
+
   const initialUrlValues = {
     url: '',
   };
@@ -27,6 +32,28 @@ const Main = () => {
     onSubmit: onUrlFormSubmit,
     validationSchema: urlValidationSchema,
   });
+
+  useEffect(() => {
+    ipcRenderer.send('request-downloads');
+    ipcRenderer.on('downloads-recieved', (_, { downloads }) => {
+      setDownloads(downloads);
+    });
+    ipcRenderer.on('download-complete', (_, { file }) => {
+      const newDownloadedFile = {
+        path: file.path,
+        name: file.fileName,
+      };
+      setDownloads((prevState) => [newDownloadedFile, ...prevState]);
+    });
+  }, []);
+
+  console.log(downloads);
+
+  const downloadedFiles = downloads.map((download) => (
+    <S.DownloadedFile key={download.name}>
+      <DownloadedFile download={download} />
+    </S.DownloadedFile>
+  ));
 
   return (
     <S.Main>
@@ -49,6 +76,10 @@ const Main = () => {
               <Button type="submit">Download</Button>
             </S.FormSubmit>
           </S.Form>
+          <S.Downloads>
+            <S.DownloadsTitle>Last downloads</S.DownloadsTitle>
+            <S.DownloadedFiles>{downloadedFiles}</S.DownloadedFiles>
+          </S.Downloads>
         </S.Content>
       </S.Container>
     </S.Main>
