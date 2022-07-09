@@ -8,8 +8,10 @@ import { ipcActions } from 'shared/constants/electron';
 
 import { MAX_DOWNLOADS } from './constants';
 
+let window: BrowserWindow;
+
 const createWindow = () => {
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Electron',
@@ -52,14 +54,10 @@ ipcMain.on(ipcActions.download, async (_, { url }) => {
     const directory = filePath.join('/');
     const properties = { directory, filename };
 
-    const window = BrowserWindow.getFocusedWindow() as BrowserWindow;
     await download(window, url, {
       ...properties,
       onCompleted: (file) => {
-        BrowserWindow.getFocusedWindow()?.webContents.send(
-          ipcActions.downloadComplete,
-          { file },
-        );
+        window.webContents.send(ipcActions.downloadComplete, { file });
       },
     });
   }
@@ -79,12 +77,9 @@ ipcMain.on(ipcActions.requestDownloads, () => {
     name,
   }));
 
-  BrowserWindow.getFocusedWindow()?.webContents.send(
-    ipcActions.downloadsRecieved,
-    {
-      downloads,
-    },
-  );
+  window.webContents.send(ipcActions.downloadsRecieved, {
+    downloads,
+  });
 });
 
 ipcMain.on(ipcActions.openFile, (_, { path }) => {
