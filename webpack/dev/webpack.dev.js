@@ -7,7 +7,7 @@ const devConfig = merge(baseConfig, {
 
   devServer: {
     static: {
-      directory: baseConfig.externals.path.dist,
+      directory: baseConfig.externals.paths.dist,
       watch: true,
     },
     hot: true,

@@ -18,11 +18,12 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      webSecurity: false,
     },
   });
 
   // window.setMenu(null);
-  // window.loadFile(path.resolve(__dirname, 'dist/index.html'));
+  // window.loadURL(path.resolve(__dirname, '../dist/index.html'));
   window.loadURL('http://localhost:8080');
 };
 

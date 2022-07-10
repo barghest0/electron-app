@@ -64,9 +64,23 @@ const DownloadsTitle = styled.div`
   margin-bottom: 20px;
 `;
 
+const TestLinks = styled.div`
+  margin-bottom: 20px;
+`;
+
+const TestLink = styled.p``;
+
+const TestLinksTitle = styled.h3`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
 export {
   Main,
+  TestLinksTitle,
   Container,
+  TestLink,
+  TestLinks,
   Form,
   FormField,
   FormSubmit,

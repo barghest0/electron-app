@@ -3,10 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PATHS = {
-  src: path.join(__dirname, '../src'),
-  public: path.join(__dirname, '../public'),
-  dist: path.join(__dirname, '../dist'),
-  electron: path.join(__dirname, '../electron'),
+  src: path.resolve(__dirname, '../src'),
+  public: path.resolve(__dirname, '../public'),
+  dist: path.resolve(__dirname, '../dist'),
+  electron: path.resolve(__dirname, '../electron'),
   assets: 'assets',
 };
 
@@ -14,13 +14,13 @@ const config = {
   devtool: 'source-map',
 
   output: {
-    filename: 'js/[name].js',
+    filename: '[name].js',
     path: PATHS.dist,
     clean: true,
   },
 
   externals: {
-    path: PATHS,
+    paths: PATHS,
   },
 
   resolve: {
