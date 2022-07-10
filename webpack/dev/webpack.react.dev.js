@@ -1,10 +1,20 @@
 const { merge } = require('webpack-merge');
 
-const devConfig = require('./webpack.dev.js');
+const baseConfig = require('../webpack.react.js');
 
-const reactConfig = merge(devConfig, {
-  entry: `${devConfig.externals.paths.src}/index.tsx`,
-  target: 'electron-renderer',
+const reactConfig = merge(baseConfig, {
+  mode: 'development',
+
+  devServer: {
+    static: {
+      directory: baseConfig.externals.paths.dist,
+      watch: true,
+    },
+    hot: true,
+    port: 8080,
+    open: false,
+    historyApiFallback: true,
+  },
 });
 
 module.exports = reactConfig;

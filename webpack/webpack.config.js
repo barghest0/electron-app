@@ -13,12 +13,6 @@ const PATHS = {
 const config = {
   devtool: 'source-map',
 
-  output: {
-    filename: '[name].js',
-    path: PATHS.dist,
-    clean: true,
-  },
-
   externals: {
     paths: PATHS,
   },
