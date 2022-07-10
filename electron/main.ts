@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
-import path from 'path';
 import { download } from 'electron-dl';
 import fs from 'fs';
 
@@ -22,8 +21,6 @@ const createWindow = () => {
     },
   });
 
-  // window.setMenu(null);
-  // window.loadURL(path.resolve(__dirname, '../dist/index.html'));
   window.loadURL('http://localhost:8080');
 };
 
