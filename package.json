@@ -21,6 +21,7 @@
   "bugs": {
     "url": "https://github.com/barghest0/electron-app/issues"
   },
+
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-runtime": "^7.18.2",
