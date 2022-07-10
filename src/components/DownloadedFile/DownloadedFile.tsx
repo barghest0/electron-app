@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { FC } from 'react';
 
+import { ipcActions } from 'shared/constants/electron';
+
 import * as S from './DownloadedFile.style';
 import { Download } from './types';
 
@@ -12,7 +14,7 @@ const DownloadedFile: FC<Props> = ({ download }) => {
   const { path, name } = download;
 
   const onDownloadedFileClick = () => {
-    ipcRenderer.send('open-file', { path });
+    ipcRenderer.send(ipcActions.openFile, { path });
   };
 
   return (

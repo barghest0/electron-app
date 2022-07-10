@@ -3,20 +3,28 @@ import path from 'path';
 import { download } from 'electron-dl';
 import fs from 'fs';
 
+import { getFileTimestamp } from 'shared/utils/fs-utils';
+import { ipcActions } from 'shared/constants/electron';
+
+import { MAX_DOWNLOADS } from './constants';
+
+let window: BrowserWindow;
+
 const createWindow = () => {
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Electron',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      webSecurity: false,
     },
   });
 
-  // window.loadFile(path.resolve(__dirname, 'dist/index.html'));
-  window.loadURL('http://localhost:8080');
   // window.setMenu(null);
+  // window.loadURL(path.resolve(__dirname, '../dist/index.html'));
+  window.loadURL('http://localhost:8080');
 };
 
 app.on('ready', createWindow);
@@ -35,37 +43,35 @@ app.on('activate', () => {
 
 const downloadsPath = app.getPath('downloads');
 
-ipcMain.on('download', async (_, { url }) => {
-  const name = url.split('/').pop();
+ipcMain.on(ipcActions.download, async (_, { url }) => {
+  const defaultName = url.split('/').pop();
+
   const userPath = dialog.showSaveDialogSync({
-    defaultPath: `${downloadsPath}/${name}`,
+    defaultPath: `${downloadsPath}/${defaultName}`,
   });
 
   if (userPath) {
-    const filePath = userPath.split('\\');
-    const filename = `${filePath.pop()}`;
-    const directory = filePath.join('/');
-    const properties = { directory, filename };
+    const path = userPath.split('\\');
 
-    const window = BrowserWindow.getFocusedWindow();
+    const filename = path.pop();
+    const directory = path.join('/');
+
     await download(window, url, {
-      ...properties,
+      directory,
+      filename,
       onCompleted: (file) => {
-        BrowserWindow.getFocusedWindow()?.webContents.send(
-          'download-complete',
-          { file },
-        );
+        window.webContents.send(ipcActions.downloadComplete, { file });
       },
     });
   }
 });
 
-ipcMain.on('request-downloads', () => {
-  const files = fs.readdirSync(downloadsPath).slice(0, 10);
-  files.sort((a, b) => {
+ipcMain.on(ipcActions.requestDownloads, () => {
+  const files = fs.readdirSync(downloadsPath).slice(0, MAX_DOWNLOADS);
+  files.sort((current, next) => {
     return (
-      fs.statSync(`${downloadsPath}/${b}`).mtime.getTime() -
-      fs.statSync(`${downloadsPath}/${a}`).mtime.getTime()
+      getFileTimestamp(`${downloadsPath}/${next}`) -
+      getFileTimestamp(`${downloadsPath}/${current}`)
     );
   });
 
@@ -74,11 +80,11 @@ ipcMain.on('request-downloads', () => {
     name,
   }));
 
-  BrowserWindow.getFocusedWindow()?.webContents.send('downloads-recieved', {
+  window.webContents.send(ipcActions.downloadsRecieved, {
     downloads,
   });
 });
 
-ipcMain.on('open-file', (_, { path }) => {
+ipcMain.on(ipcActions.openFile, (_, { path }) => {
   shell.showItemInFolder(path);
 });
