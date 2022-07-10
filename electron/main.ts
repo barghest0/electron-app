@@ -44,19 +44,21 @@ app.on('activate', () => {
 const downloadsPath = app.getPath('downloads');
 
 ipcMain.on(ipcActions.download, async (_, { url }) => {
-  const name = url.split('/').pop();
+  const defaultName = url.split('/').pop();
+
   const userPath = dialog.showSaveDialogSync({
-    defaultPath: `${downloadsPath}/${name}`,
+    defaultPath: `${downloadsPath}/${defaultName}`,
   });
 
   if (userPath) {
-    const filePath = userPath.split('\\');
-    const filename = `${filePath.pop()}`;
-    const directory = filePath.join('/');
-    const properties = { directory, filename };
+    const path = userPath.split('\\');
+
+    const filename = path.pop();
+    const directory = path.join('/');
 
     await download(window, url, {
-      ...properties,
+      directory,
+      filename,
       onCompleted: (file) => {
         window.webContents.send(ipcActions.downloadComplete, { file });
       },
