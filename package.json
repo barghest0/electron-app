@@ -8,8 +8,9 @@
     "dev:react": "webpack serve --config webpack/dev/webpack.react.dev.js",
     "dev:electron": "webpack --config webpack/dev/webpack.electron.dev.js && electron .",
     "dev:app": "concurrently \"yarn dev:react\" \"yarn dev:electron\"",
-    "build:react": "webpack --config webpack.prod.js",
-    "build:app": "yarn build:react && dev:electron"
+    "build:react": "webpack --config webpack/prod/webpack.react.prod.js",
+    "build:electron": "webpack --config webpack/prod/webpack.electron.prod.js",
+    "build:app": "yarn build:react && yarn build:electron"
   },
   "repository": {
     "type": "git",
