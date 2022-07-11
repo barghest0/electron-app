@@ -1,11 +1,12 @@
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
 import { download } from 'electron-dl';
-import fs from 'fs';
 
-import { getFileTimestamp } from 'shared/utils/fs-utils';
+import {
+  getDirectoryFiles,
+  getFilePlacement,
+  getFileTimestamp,
+} from 'shared/utils/fs-utils';
 import { ipcActions } from 'shared/constants/electron';
-
-import { MAX_DOWNLOADS } from './constants';
 
 let window: BrowserWindow;
 
@@ -48,10 +49,7 @@ ipcMain.on(ipcActions.download, async (_, { url }) => {
   });
 
   if (userPath) {
-    const path = userPath.split('\\');
-
-    const filename = path.pop();
-    const directory = path.join('/');
+    const { filename, directory } = getFilePlacement(userPath);
 
     await download(window, url, {
       directory,
@@ -64,7 +62,7 @@ ipcMain.on(ipcActions.download, async (_, { url }) => {
 });
 
 ipcMain.on(ipcActions.requestDownloads, () => {
-  const files = fs.readdirSync(downloadsPath).slice(0, MAX_DOWNLOADS);
+  const files = getDirectoryFiles(downloadsPath);
   files.sort((current, next) => {
     return (
       getFileTimestamp(`${downloadsPath}/${next}`) -

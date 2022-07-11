@@ -22,6 +22,7 @@ const config = {
       components: path.resolve(__dirname, '../src/components'),
       shared: path.resolve(__dirname, '../src/shared'),
       pages: path.resolve(__dirname, '../src/pages'),
+      'electron-entry': path.resolve(__dirname, '../electron'),
     },
     extensions: ['.ts', '.tsx', '.js'],
   },
