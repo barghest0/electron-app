@@ -43,10 +43,10 @@ app.on('activate', () => {
 const downloadsPath = app.getPath('downloads');
 
 ipcMain.on(ipcActions.download, async (_, { url }) => {
-  const defaultName = url.split('/').pop();
+  const defaultName = path.parse(url).base;
 
   const userPath = dialog.showSaveDialogSync({
-    defaultPath: `${downloadsPath}/${defaultName}`,
+    defaultPath: path.resolve(downloadsPath, defaultName),
   });
 
   if (userPath) {
@@ -66,13 +66,13 @@ ipcMain.on(ipcActions.requestDownloads, () => {
   const files = getDirectoryFiles(downloadsPath);
   files.sort((current, next) => {
     return (
-      getFileTimestamp(`${downloadsPath}/${next}`) -
-      getFileTimestamp(`${downloadsPath}/${current}`)
+      getFileTimestamp(path.resolve(downloadsPath, next)) -
+      getFileTimestamp(path.resolve(downloadsPath, current))
     );
   });
 
   const downloads = files.map((name) => ({
-    path: `${downloadsPath}\\${name}`,
+    path: path.resolve(downloadsPath, name),
     name,
   }));
 
