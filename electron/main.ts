@@ -4,7 +4,8 @@ import { download } from 'electron-dl';
 
 import {
   getDirectoryFiles,
-  getFilePlacement,
+  getFileDirectory,
+  getFilename,
   getFileTimestamp,
 } from 'shared/utils/fs-utils';
 import { ipcActions } from 'shared/constants/electron';
@@ -43,14 +44,15 @@ app.on('activate', () => {
 const downloadsPath = app.getPath('downloads');
 
 ipcMain.on(ipcActions.download, async (_, { url }) => {
-  const defaultName = path.parse(url).base;
+  const defaultName = getFilename(url);
 
   const userPath = dialog.showSaveDialogSync({
     defaultPath: path.resolve(downloadsPath, defaultName),
   });
 
   if (userPath) {
-    const { filename, directory } = getFilePlacement(userPath);
+    const filename = getFilename(userPath);
+    const directory = getFileDirectory(userPath);
 
     await download(window, url, {
       directory,
@@ -64,6 +66,7 @@ ipcMain.on(ipcActions.download, async (_, { url }) => {
 
 ipcMain.on(ipcActions.requestDownloads, () => {
   const files = getDirectoryFiles(downloadsPath);
+
   files.sort((current, next) => {
     return (
       getFileTimestamp(path.resolve(downloadsPath, next)) -

@@ -5,16 +5,20 @@ import { MAX_DOWNLOADS } from 'electron-entry/constants';
 
 const getFileTimestamp = (path: string) => fs.statSync(path).mtime.getTime();
 
-const getFilePlacement = (absolutePath: string) => {
+const getFilename = (absolutePath: string) => {
   const parsedPath = path.parse(absolutePath);
-  const directory = parsedPath.dir;
-  const filename = parsedPath.base;
 
-  return { filename, directory };
+  return parsedPath.base;
+};
+
+const getFileDirectory = (absolutePath: string) => {
+  const parsedPath = path.parse(absolutePath);
+
+  return parsedPath.dir;
 };
 
 const getDirectoryFiles = (path: string) => {
   return fs.readdirSync(path).slice(0, MAX_DOWNLOADS);
 };
 
-export { getFileTimestamp, getFilePlacement, getDirectoryFiles };
+export { getFileTimestamp, getFilename, getFileDirectory, getDirectoryFiles };
