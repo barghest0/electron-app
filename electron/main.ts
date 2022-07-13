@@ -1,9 +1,11 @@
+import path from 'path';
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
 import { download } from 'electron-dl';
 
 import {
   getDirectoryFiles,
-  getFilePlacement,
+  getFileDirectory,
+  getFilename,
   getFileTimestamp,
 } from 'shared/utils/fs-utils';
 import { ipcActions } from 'shared/constants/electron';
@@ -42,14 +44,15 @@ app.on('activate', () => {
 const downloadsPath = app.getPath('downloads');
 
 ipcMain.on(ipcActions.download, async (_, { url }) => {
-  const defaultName = url.split('/').pop();
+  const defaultName = getFilename(url);
 
   const userPath = dialog.showSaveDialogSync({
-    defaultPath: `${downloadsPath}/${defaultName}`,
+    defaultPath: path.resolve(downloadsPath, defaultName),
   });
 
   if (userPath) {
-    const { filename, directory } = getFilePlacement(userPath);
+    const filename = getFilename(userPath);
+    const directory = getFileDirectory(userPath);
 
     await download(window, url, {
       directory,
@@ -63,15 +66,16 @@ ipcMain.on(ipcActions.download, async (_, { url }) => {
 
 ipcMain.on(ipcActions.requestDownloads, () => {
   const files = getDirectoryFiles(downloadsPath);
+
   files.sort((current, next) => {
     return (
-      getFileTimestamp(`${downloadsPath}/${next}`) -
-      getFileTimestamp(`${downloadsPath}/${current}`)
+      getFileTimestamp(path.resolve(downloadsPath, next)) -
+      getFileTimestamp(path.resolve(downloadsPath, current))
     );
   });
 
   const downloads = files.map((name) => ({
-    path: `${downloadsPath}\\${name}`,
+    path: path.resolve(downloadsPath, name),
     name,
   }));
 
