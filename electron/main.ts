@@ -1,3 +1,4 @@
+import path from 'path';
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
 import { download } from 'electron-dl';
 

@@ -1,13 +1,14 @@
 import fs from 'fs';
+import path from 'path';
 
 import { MAX_DOWNLOADS } from 'electron-entry/constants';
 
 const getFileTimestamp = (path: string) => fs.statSync(path).mtime.getTime();
 
 const getFilePlacement = (absolutePath: string) => {
-  const path = absolutePath.split('\\');
-  const filename = path.pop();
-  const directory = path.join('/');
+  const parsedPath = path.parse(absolutePath);
+  const directory = parsedPath.dir;
+  const filename = parsedPath.base;
 
   return { filename, directory };
 };
